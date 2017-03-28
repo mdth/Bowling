@@ -43,16 +43,6 @@ class BowlingFrameTest {
     }
 
     @Test
-    void updateSuccessiveStrikeScore() {
-       BowlingFrame strike1 = new BowlingFrame(1, 0, 10, 0);
-       //BowlingFrame strike2 = new BowlingFrame(2, 30, 10, 0);
-       //BowlingFrame strike3 = new BowlingFrame(3, 0, 10, 0);
-
-        strike.updateStrikeScore(10, 0);
-        assertEquals(30, strike1.getScore());
-    }
-
-    @Test
     void updateSpareScore() {
         spare.updateSpareScore(0);
         assertEquals(42, spare.getScore());

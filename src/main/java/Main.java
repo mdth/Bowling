@@ -1,7 +1,7 @@
 import java.util.Stack;
 
 /**
- * Created by mailan on 27.03.17.
+ * Main class to start the Bowling Scoring System with automated knocked pin count input.
  */
 public class Main {
     private static final int TOTAL_FRAMES = 10;

@@ -2,7 +2,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 /**
- * Main class to start the Bowling Scoring System with command-line input.
+ * Main class to start the Bowling Scoring System with interactive command-line input.
  */
 public class MainInput {
     private static final int TOTAL_FRAMES = 10;
