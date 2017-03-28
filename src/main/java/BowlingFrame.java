@@ -11,6 +11,7 @@ class BowlingFrame {
     private int frameNumber;
     private int firstCount;
     private int secondCount;
+    private int thirdCount;
     private boolean waitingForStrikeUpdate = false;
     private boolean waitingForSpareUpdate = false;
 
@@ -33,7 +34,22 @@ class BowlingFrame {
                 throw new IllegalArgumentException("Sum of the given arguments are greater than number of all pins.");
             }
         } else {
-            throw new IllegalArgumentException("Given arguments are not valid int numbers.");
+            throw new IllegalArgumentException("Given arguments are not valid numbers.");
+        }
+    }
+
+    BowlingFrame(int frameNumber, int lastScore, int firstCount, int secondCount, int thirdCount) {
+        initializeFrameNumberAndLastScore(frameNumber, lastScore);
+
+        if(Utility.checkNumber(firstCount) && Utility.checkNumber(secondCount) && Utility.checkNumber(thirdCount)) {
+            if(Utility.checkIfPinCountIsLessThanAllPins(firstCount)
+                    && Utility.checkIfPinCountIsLessThanAllPins(secondCount)
+                    && Utility.checkIfPinCountIsLessThanAllPins(thirdCount)) {
+            this.firstCount = firstCount;
+            this.secondCount = secondCount;
+            this.thirdCount = thirdCount;
+            calculateLastScore();
+            }
         }
     }
 
@@ -45,6 +61,10 @@ class BowlingFrame {
         } else {
             this.lastScore = lastScore;
         }
+    }
+
+    private void calculateLastScore() {
+        this.score = this.lastScore + this.firstCount + this.secondCount + this.thirdCount;
     }
 
     private void calculateScore() {
@@ -93,6 +113,7 @@ class BowlingFrame {
      */
     void updateStrikeScore(int nextFirstCount, int nextSecondCount) {
         this.score = this.score + nextFirstCount + nextSecondCount;
+        System.out.print(this.score);
     }
 
     /**
@@ -117,4 +138,22 @@ class BowlingFrame {
     int getFrameNumber() {
         return this.frameNumber;
     }
+
+    /**
+     * Return the first pin count of the BowlingFrame .
+     * @return first pin count
+     */
+    int getFirstCount() {
+        return this.firstCount;
+    }
+
+    /**
+     * Return the second pin count of the BowlingFrame .
+     * @return second pin count
+     */
+    int getSecondCount() {
+        return this.secondCount;
+    }
+
+
 }

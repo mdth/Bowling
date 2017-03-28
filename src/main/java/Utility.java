@@ -26,4 +26,31 @@ class Utility {
         BiPredicate<Integer, Integer> isLess12 = (x, y) -> (x + y) <= BowlingFrame.ALL_PINS;
         return isLess12.test(firstCount, secondCount);
     }
+
+    /**
+     * Check whether given number is less than the maximum number of pins available.
+     * @param count pin count
+     * @return <b>true</b> if sum is valid, <b>false</b> otherwise
+     */
+    static boolean checkIfPinCountIsLessThanAllPins(int count) {
+        IntPredicate isLess12 = x -> x <= BowlingFrame.ALL_PINS;
+        return isLess12.test(count);
+    }
+
+    /**
+     * Create random number from 0 up to maximum pin number.
+     * @return random number
+     */
+    static int createRandomNumber() {
+        return (int) (Math.random() * BowlingFrame.ALL_PINS);
+    }
+
+    /**
+     * Create random number from 0 up to maximum pin number that is still on the field.
+     * @param alreadyKnockedOver already knocked over pins that are to be substracted from the maximum pin number
+     * @return random number
+     */
+    static int createRandomNumberWithRemainingPins(int alreadyKnockedOver) {
+        return (int) Math.round((Math.random() * (BowlingFrame.ALL_PINS - alreadyKnockedOver)));
+    }
 }

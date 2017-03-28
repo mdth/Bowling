@@ -13,25 +13,55 @@ public class Main {
         Stack<BowlingFrame> gameStack = new Stack<>();
 
         for(int i = 0; i < TOTAL_FRAMES; i++) {
-            int firstCount = (int) (Math.random() * BowlingFrame.ALL_PINS);
-            int secondCount = (int) Math.round((Math.random() * (BowlingFrame.ALL_PINS - firstCount)));
-            System.out.println(firstCount + " -- " + secondCount);
-
-            if (i == 0) {
-                // first frame
-                gameStack.add(i, new BowlingFrame(i, 0, firstCount, secondCount));
-            } else {
-                BowlingFrame lastFrame = gameStack.lastElement();
-                // update
-                if (lastFrame.needSpareUpdate()) {
-                    lastFrame.updateSpareScore(firstCount);
-                } else if (lastFrame.needStrikeUpdate()) {
-                    lastFrame.updateStrikeScore(firstCount, secondCount);
+            if (i == TOTAL_FRAMES - 1 ) {
+                int firstCount = Utility.createRandomNumber();
+                if (firstCount == BowlingFrame.ALL_PINS) {
+                    int secondCount = Utility.createRandomNumber();
+                    int thirdCount;
+                    if(secondCount == BowlingFrame.ALL_PINS) {
+                        thirdCount = Utility.createRandomNumber();
+                    } else {
+                        thirdCount = Utility.createRandomNumberWithRemainingPins(secondCount);
+                    }
+                    int lastScore = updateLastBowlingFrame(gameStack, firstCount, secondCount);
+                    gameStack.add(i, new BowlingFrame(i, lastScore, firstCount, secondCount, thirdCount));
+                } else {
+                    int secondCount = Utility.createRandomNumberWithRemainingPins(firstCount);
+                    if(firstCount + secondCount == BowlingFrame.ALL_PINS) {
+                        int thirdCount = Utility.createRandomNumber();
+                        int lastScore = updateLastBowlingFrame(gameStack, firstCount, secondCount);
+                        gameStack.add(i, new BowlingFrame(i, lastScore, firstCount, secondCount, thirdCount));
+                    } else {
+                        int lastScore = updateLastBowlingFrame(gameStack, firstCount, secondCount);
+                        gameStack.add(i, new BowlingFrame(i, lastScore, firstCount, secondCount));
+                    }
                 }
-                gameStack.add(i, new BowlingFrame(i, lastFrame.getScore(), firstCount, secondCount));
+            } else {
+                int firstCount = Utility.createRandomNumber();
+                int secondCount = Utility.createRandomNumberWithRemainingPins(firstCount);
+
+                if (i == 0) {
+                    // first frame
+                    gameStack.add(i, new BowlingFrame(i, 0, firstCount, secondCount));
+                } else {
+                    int lastScore = updateLastBowlingFrame(gameStack, firstCount, secondCount);
+                    gameStack.add(i, new BowlingFrame(i, lastScore, firstCount, secondCount));
+                }
             }
         }
         // output of the game score
-        gameStack.forEach(item -> System.out.println(item.getFrameNumber() + ": " + item.getScore()));
+        gameStack.forEach(item -> System.out.println(item.getFirstCount() + " - " + item.getSecondCount() + " --- " + item.getFrameNumber()
+                + ": " + item.getScore()));
+    }
+
+    private static int updateLastBowlingFrame(Stack<BowlingFrame> gameStack, int firstCount, int secondCount) {
+        BowlingFrame lastFrame = gameStack.lastElement();
+        // update
+        if (lastFrame.needSpareUpdate()) {
+            lastFrame.updateSpareScore(firstCount);
+        } else if (lastFrame.needStrikeUpdate()) {
+            lastFrame.updateStrikeScore(firstCount, secondCount);
+        }
+        return lastFrame.getScore();
     }
 }
